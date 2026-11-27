@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// Trên Android (box, máy tính bảng) màn hình CSS hẹp: hiển thị theo bề rộng 1600 px như trên máy tính rồi thu vừa màn hình
+// Chế độ tủ điều khiển (màn hình 1920×1080 / TV): dàn trang đúng 1920 px
+(function () {
+  let k = null; try { k = localStorage.getItem('hpsKiosk'); } catch (e) { }
+  const kiosk = /[?&]kiosk=1/.test(location.search) || (k === null ? !!window.HpsApp : k === '1');
+  const w = kiosk ? 1920 : 1600;
+  if (/Android/i.test(navigator.userAgent) && Math.max(screen.width, window.innerWidth) < w - 100)
+    document.querySelector('meta[name=viewport]').setAttribute('content', 'width=' + w);
+})();
+</script>
+<title>NMTĐ Đray H'Linh 2 — Mô phỏng SCADA &amp; 3D</title>
+<meta name="description" content="Mô phỏng vận hành Nhà máy Thủy điện Đray H'Linh 2 chạy độc lập trên trình duyệt (SCADA, 3D, bảo vệ rơ le, tự chấm điểm)." />
+<meta property="og:title" content="NMTĐ Đray H'Linh 2 — Mô phỏng SCADA &amp; 3D" />
+<meta property="og:description" content="Mô phỏng vận hành Nhà máy Thủy điện Đray H'Linh 2 chạy độc lập trên trình duyệt (SCADA, 3D, bảo vệ rơ le, tự chấm điểm)." />
+<meta property="og:type" content="website" />
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header>
+  <div class="brand"><svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="12" r="10" fill="none" stroke="#7fd3ff" stroke-width="1.6"/><g fill="#ff5a4e"><path d="M12 12C10 8 11 5 14 4c0 3-1 6-2 8z"/><path d="M12 12c4-1 7 1 7 4-3 0-5-2-7-4z"/><path d="M12 12c-2 3-5 5-8 3 2-2 5-3 8-3z"/></g><circle cx="12" cy="12" r="2" fill="#ffd54f"/></svg>
+    <div><b>HPS SIMULATOR</b><small>NMTĐ Đray H'Linh 2 – 2 × 8 MW</small></div></div>
+  <nav id="nav"></nav>
+  <div class="hstat">
+    <button id="modeBtn" class="mode" title="Chế độ mô phỏng độc lập trên trình duyệt">SIMULATION</button>
+    <span id="clock">--:--:--</span>
+    <span id="conn" class="dot ok" title="Mô phỏng cục bộ trên trình duyệt"></span>
+  </div>
+</header>
+<main id="pages"></main>
+<div id="toasts"></div>
+<div id="dlg" class="dlg hidden"><div class="box"><p id="dlgText"></p><div class="row"><button id="dlgOk" class="btn primary">Đồng ý</button><button id="dlgNo" class="btn">Huỷ</button></div></div></div>
+<div id="vid" class="vid hidden"><video id="vidEl" playsinline></video><span>Bấm để đóng</span></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

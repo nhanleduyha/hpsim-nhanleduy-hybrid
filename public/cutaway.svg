@@ -1,0 +1,425 @@
+        <svg id="kaplan-3d-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 860" style="width:100%;height:100%;max-height:820px">
+          <defs>
+            <!-- Gradient Vỏ ngoài xanh rêu / xám xanh (Air Housing & Turbine Pit) -->
+            <linearGradient id="oliveShellGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#4d6448" />
+              <stop offset="30%" stop-color="#6b8563" />
+              <stop offset="70%" stop-color="#536b4d" />
+              <stop offset="100%" stop-color="#354632" />
+            </linearGradient>
+
+            <linearGradient id="oliveDarkPit" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#2c3a29" />
+              <stop offset="50%" stop-color="#43573e" />
+              <stop offset="100%" stop-color="#232f21" />
+            </linearGradient>
+
+            <linearGradient id="tealHousingTop" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#67898b" />
+              <stop offset="100%" stop-color="#425d61" />
+            </linearGradient>
+
+            <!-- Gradient Khối nước xanh trong suốt hai bên buồng xoắn -->
+            <linearGradient id="spiralWaterLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.55" />
+              <stop offset="45%" stop-color="#0284c7" stop-opacity="0.68" />
+              <stop offset="100%" stop-color="#0c4a6e" stop-opacity="0.88" />
+            </linearGradient>
+
+            <linearGradient id="spiralWaterRight" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.52" />
+              <stop offset="50%" stop-color="#0369a1" stop-opacity="0.72" />
+              <stop offset="100%" stop-color="#082f49" stop-opacity="0.9" />
+            </linearGradient>
+
+            <!-- Gradient Cánh hướng vàng cam nổi bật (Wicket Gates) -->
+            <linearGradient id="wicketGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#d97706" />
+              <stop offset="45%" stop-color="#fbbf24" />
+              <stop offset="100%" stop-color="#b45309" />
+            </linearGradient>
+
+            <!-- Gradient Kim loại thép sáng & tối -->
+            <linearGradient id="steelLightGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#94a3b8" />
+              <stop offset="35%" stop-color="#e2e8f0" />
+              <stop offset="70%" stop-color="#cbd5e1" />
+              <stop offset="100%" stop-color="#64748b" />
+            </linearGradient>
+
+            <linearGradient id="shaftDarkSteel" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1e293b" />
+              <stop offset="32%" stop-color="#64748b" />
+              <stop offset="55%" stop-color="#94a3b8" />
+              <stop offset="100%" stop-color="#0f172a" />
+            </linearGradient>
+
+            <!-- Gradient Cánh quạt Kaplan 3D (Blades & Hub) -->
+            <linearGradient id="runnerBlade3D" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#e2e8f0" />
+              <stop offset="40%" stop-color="#94a3b8" />
+              <stop offset="80%" stop-color="#475569" />
+              <stop offset="100%" stop-color="#1e293b" />
+            </linearGradient>
+
+            <linearGradient id="runnerBladeShadow" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1e293b" />
+              <stop offset="60%" stop-color="#475569" />
+              <stop offset="100%" stop-color="#94a3b8" />
+            </linearGradient>
+
+            <!-- Cuộn dây Stator màu đỏ đồng -->
+            <linearGradient id="copperWindingGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ef4444" />
+              <stop offset="50%" stop-color="#b91c1c" />
+              <stop offset="100%" stop-color="#7f1d1d" />
+            </linearGradient>
+          </defs>
+
+          <!-- ===================================================================== -->
+          <!-- LỚP 1: NỀN KẾT CẤU BÊ TÔNG & VỎ BỌC PHỐI CẢNH 3D (BACKGROUND SHELL)    -->
+          <!-- ===================================================================== -->
+          <!-- Khối nền kết cấu sàn xám bao quanh giếng tuabin -->
+          <path d="M 110 265 L 810 265 L 835 550 L 795 815 L 125 815 L 85 550 Z" fill="#2d343d" stroke="#1e242b" stroke-width="2" />
+
+          <!-- Vỏ Air Housing phía trên cùng (mặt cắt hình trụ phối cảnh 3D) -->
+          <g id="part-air-housing" class="scada-part">
+            <!-- Nắp vòm xanh xám phía trên -->
+            <ellipse cx="460" cy="85" rx="255" ry="52" fill="url(#tealHousingTop)" stroke="#8faeb3" stroke-width="1.5" />
+            <path d="M 205 85 L 205 235 C 205 275, 715 275, 715 235 L 715 85 C 715 125, 205 125, 205 85 Z" fill="url(#tealHousingTop)" opacity="0.55" />
+            <!-- Mặt cắt vách trái & phải của Air Housing -->
+            <path d="M 205 85 L 245 105 L 245 255 L 205 235 Z" fill="#4f6d70" stroke="#94b8bc" stroke-width="1.2" />
+            <path d="M 715 85 L 675 105 L 675 255 L 715 235 Z" fill="#3a5255" stroke="#7ea2a6" stroke-width="1.2" />
+            <!-- Sàn xanh rêu trên nắp máy phát & lan can an toàn -->
+            <path d="M 212 115 C 280 90, 640 90, 708 115 L 675 138 C 610 118, 310 118, 245 138 Z" fill="url(#oliveShellGrad)" stroke="#8ca884" stroke-width="1.2" />
+            <!-- Lan can bảo vệ vòng cung -->
+            <path d="M 218 102 C 290 76, 630 76, 702 102" fill="none" stroke="#1e293b" stroke-width="2.5" />
+            <path d="M 218 112 C 290 86, 630 86, 702 112" fill="none" stroke="#1e293b" stroke-width="1.8" />
+          </g>
+
+          <!-- Hầm giếng tuabin xanh rêu (Turbine Pit) -->
+          <path d="M 280 315 L 640 315 L 665 485 L 255 485 Z" fill="url(#oliveDarkPit)" stroke="#4c6347" stroke-width="1.5" />
+
+          <rect id="hc-water" x="285" y="485" width="350" height="0" fill="#0ea5e9" opacity="0.55" />
+          <!-- Cầu thang kiểm tra bên phải dẫn xuống cửa đỏ (giống hệt hình mẫu) -->
+          <g id="inspection-stairs">
+            <!-- Bệ chiếu nghỉ & cửa đỏ -->
+            <polygon points="735,380 778,365 778,425 735,440" fill="#b8aa58" stroke="#6b622c" stroke-width="1" />
+            <polygon points="750,384 770,377 770,418 750,425" fill="#991b1b" stroke="#fca5a5" stroke-width="1" />
+            <!-- Các bậc cầu thang nghiêng -->
+            <polygon points="642,462 735,425 735,442 642,478" fill="#a39649" stroke="#5c5424" stroke-width="1" />
+            <path d="M 642 450 L 735 413 M 655 445 L 655 460 M 675 437 L 675 452 M 695 429 L 695 444 M 715 421 L 715 436" stroke="#cbd5e1" stroke-width="1.3" />
+          </g>
+
+          <!-- ===================================================================== -->
+          <!-- LỚP 2: BUỒNG XOẮN CHỨA NƯỚC XANH TRONG SUỐT & BUỒNG XẢ (DISCHARGE)    -->
+          <!-- ===================================================================== -->
+          <!-- Khối nước buồng xoắn bên trái (mặt cắt khối 3D xanh trong) -->
+          <g id="spiral-water-left-group">
+            <path d="M 118 465 L 235 465 L 265 555 L 265 655 L 185 735 L 118 710 Z" 
+                  fill="url(#spiralWaterLeft)" stroke="#7dd3fc" stroke-width="1.5" />
+            <!-- Mặt cắt phản chiếu ánh nước trên đỉnh -->
+            <polygon points="118,465 235,465 255,535 145,535" fill="#7dd3fc" opacity="0.22" />
+          </g>
+
+          <!-- Khối nước buồng xoắn bên phải (mặt cắt khối 3D xanh trong) -->
+          <g id="spiral-water-right-group">
+            <path d="M 685 525 L 775 525 L 775 685 L 665 685 L 655 565 Z" 
+                  fill="url(#spiralWaterRight)" stroke="#7dd3fc" stroke-width="1.5" />
+            <polygon points="685,525 775,525 760,570 675,570" fill="#7dd3fc" opacity="0.2" />
+          </g>
+
+          <!-- Buồng xả & Ống hút xanh rêu đậm (Discharge Ring & Draft Tube) -->
+          <g id="part-discharge-ring" class="scada-part">
+            <!-- Vách ngoài bê tông xanh rêu đậm -->
+            <path d="M 245 645 C 280 645, 310 665, 315 705 L 315 805 L 265 805 L 265 710 C 260 680, 235 670, 210 670 Z" 
+                  fill="url(#oliveShellGrad)" stroke="#8ca884" stroke-width="1.4" />
+            <path d="M 675 645 C 640 645, 610 665, 605 705 L 605 805 L 655 805 L 655 710 C 660 680, 685 670, 710 670 Z" 
+                  fill="url(#oliveShellGrad)" stroke="#8ca884" stroke-width="1.4" />
+            <!-- Lòng ống hút (Discharge Chamber) -->
+            <path d="M 315 655 L 605 655 L 605 805 L 315 805 Z" fill="#233326" stroke="#4d6b50" stroke-width="1.5" />
+            <!-- Vành thép Discharge Ring bao quanh cánh quạt -->
+            <path d="M 312 665 C 360 685, 560 685, 608 665 L 608 738 C 560 758, 360 758, 312 738 Z" 
+                  fill="#314735" stroke="#6e9173" stroke-width="1.5" />
+          </g>
+
+          <!-- ===================================================================== -->
+          <!-- LỚP 3: VÀNH TĨNH (STAY RINGS), CÁNH TĨNH & CÁNH HƯỚNG VÀNG CAM        -->
+          <!-- ===================================================================== -->
+          <!-- Vành tĩnh trên & dưới (Upper Stay Ring & Bottom Stay Ring) -->
+          <g id="part-stay-ring" class="scada-part">
+            <!-- Upper Stay Ring (xanh rêu viền sáng) -->
+            <path d="M 225 535 L 350 535 L 365 555 L 235 555 Z" fill="#5d7856" stroke="#a3c29b" stroke-width="1.2" />
+            <path d="M 695 535 L 570 535 L 555 555 L 685 555 Z" fill="#4f6949" stroke="#96b58e" stroke-width="1.2" />
+            <!-- Bottom Stay Ring -->
+            <path d="M 245 632 L 355 632 L 365 648 L 255 648 Z" fill="#5d7856" stroke="#a3c29b" stroke-width="1.2" />
+            <path d="M 675 632 L 565 632 L 555 648 L 665 648 Z" fill="#4f6949" stroke="#96b58e" stroke-width="1.2" />
+
+            <!-- Cánh tĩnh (Stay Vanes - màu xanh xám nối 2 vành tĩnh) -->
+            <polygon points="252,555 270,555 276,632 258,632" fill="#3b5241" stroke="#7ea186" stroke-width="1" />
+            <polygon points="668,555 650,555 644,632 662,632" fill="#3b5241" stroke="#7ea186" stroke-width="1" />
+          </g>
+
+          <!-- HỆ THỐNG CÁNH HƯỚNG DÒNG MÀU VÀNG CAM (WICKET GATES - ĐIỀU KHIỂN ĐỘNG) -->
+          <g id="part-wicket-gates" class="scada-part">
+            <!-- Dãy 8 cánh hướng màu vàng cam xếp vòng cung 3D -->
+            <g id="wicket-gates-array"></g>
+          </g>
+
+          <!-- Nắp buồng tuabin ngoài & trung gian (Outer & Intermediate Head Cover) -->
+          <g id="part-head-cover" class="scada-part">
+            <!-- Outer Head Cover -->
+            <path d="M 275 505 L 370 505 L 385 535 L 265 535 Z" fill="#4a6345" stroke="#8fb088" stroke-width="1.2" />
+            <path d="M 645 505 L 550 505 L 535 535 L 655 535 Z" fill="#3f573b" stroke="#82a37b" stroke-width="1.2" />
+
+            <!-- Vành điều chỉnh cánh hướng (Operating Ring - màu vàng cam/đồng) -->
+            <g id="part-operating-ring" class="scada-part">
+              <ellipse cx="460" cy="495" rx="158" ry="26" fill="none" stroke="#d97706" stroke-width="10" />
+              <ellipse cx="460" cy="492" rx="158" ry="26" fill="none" stroke="#fbbf24" stroke-width="3" />
+              <!-- Các tay đòn truyền động (Linkages) nối xuống cánh hướng -->
+              <g id="operating-linkages"></g>
+            </g>
+
+            <!-- Phễu nắp buồng tuabin trung gian (Intermediate Head Cover - màu bạc thép) -->
+            <path d="M 358 485 L 562 485 L 530 615 L 390 615 Z" fill="url(#steelLightGrad)" stroke="#64748b" stroke-width="1.5" opacity="0.95" />
+            <ellipse cx="460" cy="485" rx="102" ry="16" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+          </g>
+
+          <!-- Lớp hạt dòng chảy thủy lực động (Water Flow Particles) -->
+          <g id="water-particles-layer"></g>
+
+          <!-- ===================================================================== -->
+          <!-- LỚP 4: CỤM QUAY CHÍNH (EXCITER + ROTOR + MAIN SHAFT + KAPLAN RUNNER)  -->
+          <!-- ===================================================================== -->
+          <g id="rotating-core-assembly">
+            <!-- Trục chính thép tối màu xuyên suốt từ trên xuống dưới -->
+            <rect x="443" y="45" width="34" height="585" fill="url(#shaftDarkSteel)" stroke="#334155" stroke-width="1.5" />
+            <!-- Vạch ánh kim quay trên trục -->
+            <rect id="shaft-specular" x="455" y="50" width="6" height="575" fill="#e2e8f0" opacity="0.35" />
+
+            <!-- Ổ đỡ hướng tuabin màu xanh rêu (Turbine Guide Bearing) -->
+            <g id="turbine-guide-bearing">
+              <ellipse cx="460" cy="395" rx="44" ry="12" fill="#5e7a56" stroke="#a3c29b" stroke-width="1.2" />
+              <rect x="416" y="395" width="88" height="44" fill="url(#oliveShellGrad)" stroke="#8ca884" stroke-width="1.2" />
+              <ellipse cx="460" cy="439" rx="44" ry="12" fill="#3c5236" stroke="#76966e" stroke-width="1.2" />
+              <!-- Lưới tản nhiệt ổ đỡ -->
+              <rect x="424" y="372" width="72" height="22" rx="3" fill="#334155" stroke="#94a3b8" stroke-width="1" />
+              <path d="M 424 379 L 496 379 M 424 386 L 496 386 M 436 372 L 436 394 M 448 372 L 448 394 M 460 372 L 460 394 M 472 372 L 472 394 M 484 372 L 484 394" stroke="#94a3b8" stroke-width="0.9" />
+            </g>
+
+            <!-- Khớp nối bích trục chính (Shaft Coupling) -->
+            <rect x="434" y="618" width="52" height="18" rx="2" fill="#475569" stroke="#cbd5e1" stroke-width="1.2" />
+
+            <!-- BÁNH XE CÔNG TÁC KAPLAN 3D (HUB + 5 BLADES QUAY & ĐỔI GÓC PITCH) -->
+            <g id="part-runner-hub" class="scada-part">
+              <!-- Cánh phía sau (vẽ trước để tạo chiều sâu 3D) -->
+              <g id="runner-blades-back"></g>
+
+              <!-- Bầu bánh xe công tác (Hub) -->
+              <path d="M 422 636 L 498 636 L 504 712 L 416 712 Z" fill="url(#steelLightGrad)" stroke="#475569" stroke-width="1.5" />
+              <ellipse cx="460" cy="636" rx="38" ry="9" fill="#94a3b8" stroke="#475569" stroke-width="1.2" />
+
+              <!-- Nón hướng dòng phía dưới (Runner Nose Cone) -->
+              <path d="M 416 712 L 504 712 C 498 765, 478 796, 460 796 C 442 796, 422 765, 416 712 Z" 
+                    fill="url(#shaftDarkSteel)" stroke="#64748b" stroke-width="1.5" />
+
+              <!-- Các cánh quạt phía trước (vẽ đè lên Hub để tạo hiệu ứng nổi 3D) -->
+              <g id="runner-blades-front"></g>
+            </g>
+          </g>
+
+          <!-- ===================================================================== -->
+          <!-- LỚP 5: MÁY PHÁT ĐIỆN PHÍA TRÊN (STATOR, ROTOR, BRACKETS, BRAKE)       -->
+          <!-- ===================================================================== -->
+          <!-- Giá đỡ dưới & Phanh máy phát (Lower Bracket & Brake) -->
+          <g id="part-lower-bracket" class="scada-part">
+            <polygon points="275,268 645,268 625,295 295,295" fill="#cbd5e1" stroke="#475569" stroke-width="1.4" />
+            <!-- Các chân đỡ chữ thập dưới -->
+            <rect x="315" y="295" width="38" height="32" fill="#94a3b8" stroke="#334155" stroke-width="1.2" />
+            <rect x="441" y="295" width="38" height="36" fill="#94a3b8" stroke="#334155" stroke-width="1.2" />
+            <rect x="567" y="295" width="38" height="32" fill="#94a3b8" stroke="#334155" stroke-width="1.2" />
+          </g>
+
+          <!-- Cụm phanh cơ khí (Brake) -->
+          <g id="part-brake" class="scada-part">
+            <rect x="292" y="254" width="34" height="14" rx="2" fill="#ef4444" stroke="#fecaca" stroke-width="1" />
+            <rect x="594" y="254" width="34" height="14" rx="2" fill="#ef4444" stroke="#fecaca" stroke-width="1" />
+          </g>
+
+          <!-- Lõi thép & Cuộn dây Stator (màu đồng đỏ & xanh dương như hình mẫu) -->
+          <g id="part-stator" class="scada-part">
+            <!-- Khối Stator bên trái -->
+            <path d="M 248 175 L 308 175 L 308 248 L 248 248 Z" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
+            <!-- Đầu bối dây Stator uốn cong màu đỏ đồng -->
+            <path d="M 255 175 C 255 152, 305 152, 305 175" fill="none" stroke="#dc2626" stroke-width="12" />
+            <path d="M 255 175 C 255 152, 305 152, 305 175" fill="none" stroke="#fca5a5" stroke-width="2" stroke-dasharray="4 3" />
+            <rect x="256" y="182" width="44" height="58" fill="url(#copperWindingGrad)" opacity="0.85" />
+
+            <!-- Khối Stator bên phải -->
+            <path d="M 612 175 L 672 175 L 672 248 L 612 248 Z" fill="#1e293b" stroke="#64748b" stroke-width="1.5" />
+            <path d="M 615 175 C 615 152, 665 152, 665 175" fill="none" stroke="#dc2626" stroke-width="12" />
+            <path d="M 615 175 C 615 152, 665 152, 665 175" fill="none" stroke="#fca5a5" stroke-width="2" stroke-dasharray="4 3" />
+            <rect x="620" y="182" width="44" height="58" fill="url(#copperWindingGrad)" opacity="0.85" />
+          </g>
+
+          <!-- Bánh xe Rotor máy phát quay ngang (Rotor + Spider) -->
+          <g id="part-rotor" class="scada-part">
+            <!-- Vành Rotor chính -->
+            <rect x="312" y="180" width="296" height="62" rx="3" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+            <!-- Các cực từ Rotor chuyển động động theo RPM -->
+            <g id="rotor-poles-dynamic"></g>
+            <!-- Nan hoa Spider đỡ vành Rotor -->
+            <polygon points="335,242 585,242 545,264 375,264" fill="#94a3b8" stroke="#475569" stroke-width="1.2" />
+          </g>
+
+          <!-- Giá đỡ chữ thập trên (Upper Bracket) & Bộ kích từ (Exciter) -->
+          <g id="part-upper-bracket" class="scada-part">
+            <polygon points="245,148 675,148 640,174 280,174" fill="url(#steelLightGrad)" stroke="#475569" stroke-width="1.5" />
+            <!-- Cổ góp & Kích từ phía trên cùng (Exciter) -->
+            <rect x="415" y="72" width="90" height="56" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="1.5" />
+            <rect x="422" y="80" width="76" height="16" fill="#dc2626" opacity="0.85" />
+            <path d="M 420 100 L 500 100 M 430 100 L 430 124 M 442 100 L 442 124 M 454 100 L 454 124 M 466 100 L 466 124 M 478 100 L 478 124 M 490 100 L 490 124" stroke="#334155" stroke-width="2" />
+          </g>
+
+          <!-- ===================================================================== -->
+          <!-- LỚP 6: HỆ THỐNG CHÚ THÍCH CHUẨN BẢN VẼ KỸ THUẬT (WHITE CALLOUTS)      -->
+          <!-- ===================================================================== -->
+          <g id="technical-callouts" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#f8fafc" letter-spacing="0.5">
+            <!-- BÊN TRÁI (LEFT CALLOUTS - Y HỆT HÌNH MẪU) -->
+            <!-- 1. STATOR -->
+            <g class="callout-item" data-part="part-stator" data-en="STATOR" data-vi="Lõi thép &amp; Cuộn dây tĩnh Stator" data-tag="GEN-ST01" data-desc="Phần tĩnh của máy phát điện đồng bộ 3 pha, nơi sinh ra dòng điện cảm ứng khi Rotor quay.">
+              <polyline points="265,212 165,212 145,212" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="265" cy="212" r="3.5" fill="#ffffff" />
+              <text x="138" y="216" text-anchor="end" class="callout-label" data-en="STATOR" data-vi="STATOR (PHẦN TĨNH)">STATOR</text>
+            </g>
+
+            <!-- 2. UPPER BRACKET -->
+            <g class="callout-item" data-part="part-upper-bracket" data-en="UPPER BRACKET" data-vi="Giá đỡ chữ thập trên" data-tag="BRG-UP01" data-desc="Kết cấu dầm thép chịu lực phía trên máy phát, đỡ ổ chặn và ổ hướng trên của tổ máy.">
+              <polyline points="278,162 185,255 145,255" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="278" cy="162" r="3.5" fill="#ffffff" />
+              <text x="138" y="259" text-anchor="end" class="callout-label" data-en="UPPER BRACKET" data-vi="GIÁ ĐỠ TRÊN">UPPER BRACKET</text>
+            </g>
+
+            <!-- 3. BRAKE -->
+            <g class="callout-item" data-part="part-brake" data-en="BRAKE" data-vi="Hệ thống phanh hãm tổ máy" data-tag="BRK-01" data-desc="Phanh khí nén/thủy lực dùng để hãm dừng hoàn toàn Rotor khi tốc độ giảm dưới 30% định mức.">
+              <polyline points="304,262 195,302 145,302" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="304" cy="262" r="3.5" fill="#ffffff" />
+              <text x="138" y="306" text-anchor="end" class="callout-label" data-en="BRAKE" data-vi="HỆ THỐNG PHANH">BRAKE</text>
+            </g>
+
+            <!-- 4. INTERMEDIATE HEAD COVER -->
+            <g class="callout-item" data-part="part-head-cover" data-en="INTERMEDIATE HEAD COVER" data-vi="Nắp buồng tuabin trung gian" data-tag="COV-IN01" data-desc="Nắp thép hình nón ngăn nước từ buồng tuabin tràn lên hầm máy phát và đỡ ổ hướng tuabin.">
+              <polyline points="372,495 225,418 145,418" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="372" cy="495" r="3.5" fill="#ffffff" />
+              <text x="138" y="414" text-anchor="end" class="callout-label" data-en="INTERMEDIATE" data-vi="NẮP TUABIN">INTERMEDIATE</text>
+              <text x="138" y="428" text-anchor="end" class="callout-label-sub" data-en="HEAD COVER" data-vi="TRUNG GIAN">HEAD COVER</text>
+            </g>
+
+            <!-- 5. OPERATING RING -->
+            <g class="callout-item" data-part="part-operating-ring" data-en="OPERATING RING" data-vi="Vành điều chỉnh cánh hướng" data-tag="OPR-01" data-desc="Vành thép truyền động nhận lực từ Servomotor để xoay đồng thời tất cả các cánh hướng dòng.">
+              <polyline points="315,502 210,468 145,468" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="315" cy="502" r="3.5" fill="#ffffff" />
+              <text x="138" y="464" text-anchor="end" class="callout-label" data-en="OPERATING" data-vi="VÀNH ĐIỀU CHỈNH">OPERATING</text>
+              <text x="138" y="478" text-anchor="end" class="callout-label-sub" data-en="RING" data-vi="CÁNH HƯỚNG">RING</text>
+            </g>
+
+            <!-- 6. UPPER STAY RING -->
+            <g class="callout-item" data-part="part-stay-ring" data-en="UPPER STAY RING" data-vi="Vành tĩnh trên buồng xoắn" data-tag="STY-UP01" data-desc="Vành chịu lực phía trên của buồng xoắn, truyền tải trọng bê tông nhà máy xuống vành tĩnh dưới.">
+              <polyline points="245,545 190,518 145,518" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="245" cy="545" r="3.5" fill="#ffffff" />
+              <text x="138" y="514" text-anchor="end" class="callout-label" data-en="UPPER STAY" data-vi="VÀNH TĨNH">UPPER STAY</text>
+              <text x="138" y="528" text-anchor="end" class="callout-label-sub" data-en="RING" data-vi="TRÊN">RING</text>
+            </g>
+
+            <!-- 7. BLADES -->
+            <g class="callout-item" data-part="part-runner-hub" data-en="BLADES (RUNNER)" data-vi="Cánh bánh xe công tác Kaplan" data-tag="RUN-BL01" data-desc="Các cánh thủy lực có thể xoay thay đổi góc nghiêng (pitch) tự động để tối ưu hiệu suất theo tải.">
+              <polyline points="365,698 220,698 145,698" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="365" cy="698" r="3.5" fill="#ffffff" />
+              <text x="138" y="702" text-anchor="end" class="callout-label" data-en="BLADES" data-vi="CÁNH BÁNH XE">BLADES</text>
+            </g>
+
+            <!-- 8. DISCHARGE RING -->
+            <g class="callout-item" data-part="part-discharge-ring" data-en="DISCHARGE RING" data-vi="Buồng xả bánh xe công tác" data-tag="DSC-01" data-desc="Buồng thép hình cầu/trụ bao sát đầu cánh quạt Kaplan, dẫn dòng nước sau tuabin xuống ống hút.">
+              <polyline points="315,768 205,768 145,768" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="315" cy="768" r="3.5" fill="#ffffff" />
+              <text x="138" y="772" text-anchor="end" class="callout-label" data-en="DISCHARGE RING" data-vi="BUỒNG XẢ">DISCHARGE RING</text>
+            </g>
+
+            <!-- BÊN PHẢI (RIGHT CALLOUTS - Y HỆT HÌNH MẪU) -->
+            <!-- 9. AIR HOUSING -->
+            <g class="callout-item" data-part="part-air-housing" data-en="AIR HOUSING" data-vi="Vỏ bọc thông gió máy phát" data-tag="AIR-HS01" data-desc="Vỏ bao kín khoang máy phát điện, dẫn khí nóng qua các bộ làm mát không khí (Air Coolers).">
+              <polyline points="695,168 755,168 775,168" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="695" cy="168" r="3.5" fill="#ffffff" />
+              <text x="782" y="172" text-anchor="start" class="callout-label" data-en="AIR HOUSING" data-vi="VỎ MÁY PHÁT">AIR HOUSING</text>
+            </g>
+
+            <!-- 10. ROTOR -->
+            <g class="callout-item" data-part="part-rotor" data-en="ROTOR" data-vi="Rotor máy phát điện đồng bộ" data-tag="GEN-RT01" data-desc="Phần quay của máy phát điện mang các cực từ kích từ, quay đồng trục với bánh xe công tác.">
+              <polyline points="595,212 745,212 775,212" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="595" cy="212" r="3.5" fill="#ffffff" />
+              <text x="782" y="216" text-anchor="start" class="callout-label" data-en="ROTOR" data-vi="ROTOR (PHẦN QUAY)">ROTOR</text>
+            </g>
+
+            <!-- 11. SPIDER -->
+            <g class="callout-item" data-part="part-rotor" data-en="ROTOR SPIDER" data-vi="Nan hoa đỡ vành Rotor" data-tag="GEN-SP01" data-desc="Kết cấu nan hoa thép nối moay-ơ trục chính với vành cực từ Rotor phía ngoài.">
+              <polyline points="555,252 745,252 775,252" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="555" cy="252" r="3.5" fill="#ffffff" />
+              <text x="782" y="256" text-anchor="start" class="callout-label" data-en="SPIDER" data-vi="NAN HOA ROTOR">SPIDER</text>
+            </g>
+
+            <!-- 12. LOWER BRACKET -->
+            <g class="callout-item" data-part="part-lower-bracket" data-en="LOWER BRACKET" data-vi="Giá đỡ chữ thập dưới" data-tag="BRG-LW01" data-desc="Khung đỡ phía dưới máy phát, tích hợp ổ đỡ hướng dưới và các kích phanh nâng Rotor.">
+              <polyline points="615,288 745,288 775,288" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="615" cy="288" r="3.5" fill="#ffffff" />
+              <text x="782" y="292" text-anchor="start" class="callout-label" data-en="LOWER BRACKET" data-vi="GIÁ ĐỠ DƯỚI">LOWER BRACKET</text>
+            </g>
+
+            <!-- 13. OUTER HEAD COVER -->
+            <g class="callout-item" data-part="part-head-cover" data-en="OUTER HEAD COVER" data-vi="Nắp buồng tuabin ngoài" data-tag="COV-OT01" data-desc="Vành nắp ngoài của buồng tuabin, giữ các bạc trục phía trên của hệ thống cánh hướng dòng.">
+              <polyline points="610,518 730,502 775,502" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="610" cy="518" r="3.5" fill="#ffffff" />
+              <text x="782" y="498" text-anchor="start" class="callout-label" data-en="OUTER HEAD" data-vi="NẮP TUABIN">OUTER HEAD</text>
+              <text x="782" y="512" text-anchor="start" class="callout-label-sub" data-en="COVER" data-vi="NGOÀI">COVER</text>
+            </g>
+
+            <!-- 14. WICKET GATE -->
+            <g class="callout-item" data-part="part-wicket-gates" data-en="WICKET GATE" data-vi="Cánh hướng dòng (màu vàng)" data-tag="WKT-GT01" data-desc="Hệ thống cánh hướng xoay quanh trục đứng để điều tiết lưu lượng và tạo xoáy thuận cho dòng nước.">
+              <polyline points="602,585 735,552 775,552" fill="none" stroke="#fbbf24" stroke-width="1.5" />
+              <circle cx="602" cy="585" r="4" fill="#fbbf24" />
+              <text x="782" y="556" text-anchor="start" fill="#fde047" class="callout-label" data-en="WICKET GATE" data-vi="CÁNH HƯỚNG DÒNG">WICKET GATE</text>
+            </g>
+
+            <!-- 15. STAY VANE -->
+            <g class="callout-item" data-part="part-stay-ring" data-en="STAY VANE" data-vi="Cánh tĩnh hướng dòng" data-tag="STY-VN01" data-desc="Các cánh cố định nối vành tĩnh trên và dưới, định hướng sơ bộ dòng nước từ buồng xoắn.">
+              <polyline points="656,595 735,595 775,595" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="656" cy="595" r="3.5" fill="#ffffff" />
+              <text x="782" y="599" text-anchor="start" class="callout-label" data-en="STAY VANE" data-vi="CÁNH TĨNH">STAY VANE</text>
+            </g>
+
+            <!-- 16. BOTTOM STAY RING -->
+            <g class="callout-item" data-part="part-stay-ring" data-en="BOTTOM STAY RING" data-vi="Vành tĩnh dưới buồng xoắn" data-tag="STY-BT01" data-desc="Vành thép cố định phía dưới buồng xoắn, neo chặt vào kết cấu bê tông khối móng nhà máy.">
+              <polyline points="642,640 735,640 775,640" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="642" cy="640" r="3.5" fill="#ffffff" />
+              <text x="782" y="636" text-anchor="start" class="callout-label" data-en="BOTTOM STAY" data-vi="VÀNH TĨNH">BOTTOM STAY</text>
+              <text x="782" y="650" text-anchor="start" class="callout-label-sub" data-en="RING" data-vi="DƯỚI">RING</text>
+            </g>
+
+            <!-- 17. HUB -->
+            <g class="callout-item" data-part="part-runner-hub" data-en="RUNNER HUB" data-vi="Bầu bánh xe công tác (Hub)" data-tag="RUN-HB01" data-desc="Bầu trục rỗng chứa cơ cấu xi-lanh thủy lực Servo điều khiển góc xoay của toàn bộ cánh quạt Kaplan.">
+              <polyline points="485,718 735,718 775,718" fill="none" stroke="#ffffff" stroke-width="1.4" />
+              <circle cx="485" cy="718" r="3.5" fill="#ffffff" />
+              <text x="782" y="722" text-anchor="start" class="callout-label" data-en="HUB" data-vi="BẦU BÁNH XE (HUB)">HUB</text>
+            </g>
+          </g>
+
+          <!-- Dải tiêu đề chân bản vẽ giống poster kỹ thuật USACE -->
+          <g transform="translate(0, 818)">
+            <rect x="85" y="0" width="750" height="36" rx="4" fill="#090d14" stroke="#1e293b" stroke-width="1" />
+            <text x="460" y="15" text-anchor="middle" fill="#cbd5e1" font-size="10.5" font-weight="700" letter-spacing="3.5">
+              NHÀ MÁY THUỶ ĐIỆN ĐRAY H'LINH 2
+            </text>
+            <text x="460" y="31" text-anchor="middle" fill="#fde047" font-size="13" font-weight="800" letter-spacing="2">
+              <tspan id="cut-title">MẶT CẮT TỔ MÁY KAPLAN</tspan>
+            </text>
+          </g>
+        </svg>

@@ -1,0 +1,6 @@
+{
+  "name": "NMTĐ Đray H'Linh 2 — Mô phỏng SCADA & 3D",
+  "description": "Mô phỏng vận hành Nhà máy Thủy điện Đray H'Linh 2 chạy độc lập trên trình duyệt (SCADA, 3D, bảo vệ rơ le, tự chấm điểm).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
