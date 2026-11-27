@@ -62,10 +62,25 @@
 
   // ====================================================== quy trình vận hành (tìm kiếm)
   let QT = null;
+  const LS_QT = 'hpsQt';
   async function loadQt() {
     if (QT) return QT;
-    try { const r = await fetch('./qt.json'); QT = await r.json(); } catch (e) { QT = []; }
+    try { const j = JSON.parse(lsGet(LS_QT) || 'null'); if (Array.isArray(j) && j.length) return (QT = j); } catch (e) { }
+    try { const r = await fetch('./qt.json'); QT = r.ok ? await r.json() : []; } catch (e) { QT = []; }
+    if (!Array.isArray(QT)) QT = [];
     return QT;
+  }
+  /** Nạp file quy trình (qt.json do giáo viên phát) vào trình duyệt – không đưa lên mạng */
+  function importQt(file, done) {
+    const rd = new FileReader();
+    rd.onload = () => {
+      try {
+        const j = JSON.parse(rd.result);
+        if (!Array.isArray(j) || !j.length || !j.every(c => c && typeof c.t === 'string' && typeof c.x === 'string')) throw new Error('sai định dạng');
+        lsSet(LS_QT, JSON.stringify(j)); QT = j; done(true, j.length);
+      } catch (e) { done(false, 0); }
+    };
+    rd.readAsText(file, 'utf-8');
   }
   const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd');
   async function searchQt(query) {
@@ -77,6 +92,7 @@
       const t = norm(c.t + ' ' + c.x);
       let sc = 0; for (const w of words) { const m = t.split(w).length - 1; sc += Math.min(m, 5) * (w.length > 3 ? 2 : 1); }
       if (dieu && new RegExp('^dieu ' + dieu + '\\b').test(norm(c.t))) sc += 100;
+      const tt = norm(c.t); if (tt.includes(norm(query).trim())) sc += 50; for (const w of words) if (tt.includes(w)) sc += 3;
       return { i, sc };
     }).filter(x => x.sc > 0).sort((a, b) => b.sc - a.sc).slice(0, 3);
     return { results: scored.map(x => ({ title: qt[x.i].t, text: qt[x.i].x.slice(0, 2600) })) };
@@ -221,7 +237,20 @@ ${hint ? '- CHẾ ĐỘ GỢI Ý (học viên đang làm bài): KHÔNG đưa đ�
     const hint = ce('input', { type: 'checkbox' }, lbl); hint.checked = lsGet(LS_HINT) === '1';
     hint.onchange = () => lsSet(LS_HINT, hint.checked ? '1' : '0');
     lbl.appendChild(document.createTextNode(' Chế độ gợi ý (đang làm bài)'));
-    ce('div', { style: 'color:#888;font-size:12px;margin:4px 0 8px' }, c, 'API key chỉ lưu trong trình duyệt này và gửi thẳng tới Google. Trợ lý có thể sai – luôn đối chiếu Quy trình vận hành. Trợ lý chỉ đọc dữ liệu, không thao tác thay bạn.');
+    const qr = ce('div', { class: 'row', style: 'gap:6px;margin-top:6px' }, c);
+    ce('span', {}, qr, 'Quy trình vận hành:');
+    const qst = ce('b', {}, qr, '…');
+    const fin = ce('input', { type: 'file', accept: '.json,application/json', style: 'display:none' }, qr);
+    ce('button', { class: 'btn', onclick: () => fin.click() }, qr, '📂 Nạp quy trình (qt.json)');
+    const qdel = ce('button', { class: 'btn', onclick: () => { try { localStorage.removeItem(LS_QT); } catch (e) { } QT = null; showQt(); } }, qr, 'Gỡ');
+    async function showQt() {
+      const n = (await loadQt()).length;
+      qst.textContent = n ? `đã nạp (${n} đoạn)` : 'chưa nạp – trợ lý trả lời theo kiến thức chung';
+      qst.style.color = n ? '#2b8a3e' : '#c92a2a'; qdel.style.display = n ? '' : 'none';
+    }
+    fin.onchange = () => { const f = fin.files[0]; if (!f) return; importQt(f, (ok, n) => { window.toast && window.toast(ok ? `Đã nạp quy trình: ${n} đoạn` : 'File quy trình không đúng định dạng', !ok); showQt(); }); fin.value = ''; };
+    showQt();
+    ce('div', { style: 'color:#888;font-size:12px;margin:4px 0 8px' }, c, 'File quy trình chỉ lưu trong trình duyệt này, không đưa lên mạng. API key chỉ lưu trong trình duyệt này và gửi thẳng tới Google. Trợ lý có thể sai – luôn đối chiếu Quy trình vận hành. Trợ lý chỉ đọc dữ liệu, không thao tác thay bạn.');
     const q = ce('div', { class: 'row', style: 'gap:6px;flex-wrap:wrap' }, c);
     for (const [t, p] of [
       ['Tình trạng nhà máy?', 'Tóm tắt tình trạng nhà máy hiện tại và các điểm cần chú ý.'],
