@@ -8,6 +8,17 @@
   const LS_KEY = 'hpsAiKey', LS_MODEL = 'hpsAiModel', LS_HINT = 'hpsAiHint';
   const lsGet = (k, d = '') => { try { const v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } };
   const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { } };
+  const DEF_MODEL = 'gemini-3.5-flash-lite';
+  // mô hình cũ Google đã ngừng cho người dùng mới -> tự chuyển sang mặc định mới
+  const getModel = () => { const m = lsGet(LS_MODEL, ''); return !m || m === 'gemini-2.5-flash' ? DEF_MODEL : m; };
+  /** Lấy danh sách mô hình Gemini mà key này dùng được (để chọn, khỏi gõ sai tên) */
+  async function listModels(key) {
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200', { headers: { 'x-goog-api-key': key } });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error((j.error && j.error.message) || ('Lỗi HTTP ' + r.status));
+    return (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent') && /gemini/i.test(m.name))
+      .map(m => m.name.replace(/^models\//, '')).sort().reverse();
+  }
   const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
   const f1 = (v, d = 1) => (v == null || !isFinite(v) ? '-' : (+v).toFixed(d));
   const api = p => window.localApi.request(p);
@@ -166,7 +177,7 @@ ${hint ? '- CHẾ ĐỘ GỢI Ý (học viên đang làm bài): KHÔNG đưa đ�
 
   let history = [];
   async function gemini(contents, hint) {
-    const key = lsGet(LS_KEY), model = lsGet(LS_MODEL, 'gemini-2.5-flash');
+    const key = lsGet(LS_KEY), model = getModel();
     if (!key) throw new Error('Chưa nhập API key Gemini.');
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
@@ -230,8 +241,16 @@ ${hint ? '- CHẾ ĐỘ GỢI Ý (học viên đang làm bài): KHÔNG đưa đ�
     ce('span', {}, set, 'API key Gemini:');
     const key = ce('input', { type: 'password', placeholder: 'dán API key của bạn', style: 'width:300px' }, set); key.value = lsGet(LS_KEY);
     ce('span', {}, set, 'Mô hình:');
-    const model = ce('input', { type: 'text', style: 'width:170px' }, set); model.value = lsGet(LS_MODEL, 'gemini-2.5-flash');
-    ce('button', { class: 'btn primary', onclick: () => { lsSet(LS_KEY, key.value.trim()); lsSet(LS_MODEL, model.value.trim() || 'gemini-2.5-flash'); window.toast && window.toast('Đã lưu cài đặt trợ lý'); } }, set, 'Lưu');
+    const model = ce('input', { type: 'text', style: 'width:200px', list: 'hpsAiModels' }, set); model.value = getModel();
+    const dl = ce('datalist', { id: 'hpsAiModels' }, set);
+    const fillModels = async () => {
+      const k = key.value.trim(); if (!k) return;
+      try { const ms = await listModels(k); dl.innerHTML = ms.map(m => `<option value="${esc(m)}">`).join('');
+        if (ms.length && !ms.includes(model.value.trim())) { model.value = ms.find(m => /flash-lite/.test(m)) || ms.find(m => /flash/.test(m)) || ms[0]; lsSet(LS_MODEL, model.value); window.toast && window.toast('Đã chọn mô hình ' + model.value); } }
+      catch (e) { window.toast && window.toast('Không lấy được danh sách mô hình: ' + e.message, true); }
+    };
+    fillModels();
+    ce('button', { class: 'btn primary', onclick: () => { lsSet(LS_KEY, key.value.trim()); lsSet(LS_MODEL, model.value.trim() || DEF_MODEL); window.toast && window.toast('Đã lưu cài đặt trợ lý'); fillModels(); } }, set, 'Lưu');
     ce('a', { href: 'https://aistudio.google.com/app/apikey', target: '_blank', rel: 'noopener', style: 'margin-left:6px' }, set, 'Lấy API key miễn phí');
     const lbl = ce('label', { style: 'margin-left:auto' }, set);
     const hint = ce('input', { type: 'checkbox' }, lbl); hint.checked = lsGet(LS_HINT) === '1';
