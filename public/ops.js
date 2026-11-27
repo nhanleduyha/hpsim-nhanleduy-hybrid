@@ -21,7 +21,8 @@
   }
   const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
   const f1 = (v, d = 1) => (v == null || !isFinite(v) ? '-' : (+v).toFixed(d));
-  const api = p => window.localApi.request(p);
+  // bản web: mô phỏng trong trình duyệt (localApi); bản Android: gọi máy chủ của app qua /api
+  const api = p => (window.localApi ? window.localApi.request(p) : fetch('/api/' + p).then(r => r.json()));
   const snap = () => (window.__hpsSim && window.__hpsSim.snapshot) || {};
 
   // ====================================================== trang Giám sát
@@ -31,7 +32,7 @@
     const r = ce('div', { class: 'row' }, top);
     ce('h3', { style: 'margin:0 12px 0 0' }, r, 'Giám sát – thống kê công tác vận hành');
     const info = ce('span', { style: 'color:#666' }, r, '');
-    ce('button', { class: 'btn', style: 'margin-left:auto', onclick: () => askAi('Có thiết bị hay thông số nào đang bất thường không? Phân tích nguyên nhân có thể và việc người vận hành cần làm theo quy trình.') }, r, '🤖 Hỏi trợ lý AI về các bất thường');
+    if (window.localApi) ce('button', { class: 'btn', style: 'margin-left:auto', onclick: () => askAi('Có thiết bị hay thông số nào đang bất thường không? Phân tích nguyên nhân có thể và việc người vận hành cần làm theo quy trình.') }, r, '🤖 Hỏi trợ lý AI về các bất thường');
     const an = ce('div', { style: 'margin-top:8px' }, top);
     const c2 = ce('div', { class: 'card pad', style: 'margin-top:10px' }, root);
     ce('h3', { style: 'margin:0 0 6px' }, c2, 'Bơm, máy nén – số lần chạy, thời gian chạy (so với mức nền tự học)');
