@@ -123,7 +123,7 @@
       const conds = g('startConds');
       o.to_may['H' + n] = {
         trinh_tu: g('seqState'), buoc: g('seq'), che_do_dieu_toc: g('gov'), P_MW: g('Pload'), Q_MVAr: g('Qload'), U_kV: g('Vgen'), f_Hz: g('freq'),
-        toc_do_pct: g('speed'), do_mo_canh_huong_pct: g('GV'), canh_BXCT_pct: g('blade'), cot_nuoc_m: g('head'), ap_luc_dau_MPa: g('oilMPa'),
+        toc_do_v_ph: g('speed'), do_mo_canh_huong_pct: g('GV'), canh_BXCT_pct: g('blade'), cot_nuoc_m: g('head'), ap_luc_dau_MPa: g('oilMPa'),
         chot_khoa_canh_huong: g('servoLock') ? 'ĐANG KHOÁ' : 'đã mở', bao_ve_da_cat: g('tripped') ? (g('tripReason') || 'có') : 'không',
         nhiet_do_C: { o_huong_tren: g('upper'), o_huong_duoi: g('lower'), o_do: g('thrust'), o_huong_turbine: g('turbPad'), stator: g('stator'), dau_MBA: g('trOil') },
         dieu_kien_khoi_dong_chua_dat: Array.isArray(conds) ? conds.filter(c => c && c.ok === false).map(c => c.t) : conds,
@@ -171,6 +171,7 @@ Nguyên tắc:
 - Về thao tác và xử lý sự cố: tra search_procedure và trả lời theo Quy trình của nhà máy, nêu số Điều. Nếu quy trình không đề cập thì nói rõ là kiến thức chung.
 - Khi phân tích bất thường: nêu hiện tượng (kèm số liệu), các nguyên nhân có thể theo thứ tự khả năng, cách kiểm tra/xác nhận, việc cần làm theo quy trình.
 - Trả lời tiếng Việt, ngắn gọn, rõ ràng; dùng gạch đầu dòng khi liệt kê.
+- Viết số và đơn vị dạng chữ thường (ví dụ: 40,4 °C; 1,00 MW; 214,3 v/ph). TUYỆT ĐỐI không dùng LaTeX, ký hiệu $, \\text, công thức toán hay dấu ` bao quanh tên biến; gọi thiết bị bằng tên tiếng Việt thay vì mã biến.
 - Báo cáo cuối ca: gồm tình trạng vận hành, sản lượng/công suất, thao tác chính, sự cố/bất thường, thống kê thiết bị phụ, kiến nghị.
 - Đây là mô phỏng phục vụ đào tạo; nhắc học viên đối chiếu quy trình gốc khi cần.
 ${hint ? '- CHẾ ĐỘ GỢI Ý (học viên đang làm bài): KHÔNG đưa đáp án hay trình tự thao tác chi tiết; chỉ đặt câu hỏi gợi mở, chỉ ra chỗ cần kiểm tra và điều quy trình liên quan để học viên tự tìm.' : ''}`;
@@ -197,7 +198,14 @@ ${hint ? '- CHẾ ĐỘ GỢI Ý (học viên đang làm bài): KHÔNG đưa đ�
     d.style.cssText = `margin:6px 0;padding:8px 10px;border-radius:8px;white-space:pre-wrap;line-height:1.45;${role === 'user' ? 'background:#e7f5ff;margin-left:15%' : role === 'tool' ? 'color:#888;font-size:12px;padding:2px 10px' : 'background:#f8f9fa;margin-right:5%'}`;
     d.innerHTML = html; ui.log.appendChild(d); ui.log.scrollTop = ui.log.scrollHeight; return d;
   }
-  const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/^#+\s*(.+)$/gm, '<b>$1</b>').replace(/^\s*[\*-]\s+/gm, '• ');
+  // gỡ LaTeX/markdown mà mô hình hay chèn vào: $P = 1\text{ MW}$, ^\circ, \approx, `mã`
+  const unTex = s => String(s)
+    .replace(/\\text\{([^}]*)\}/g, '$1').replace(/\\mathrm\{([^}]*)\}/g, '$1')
+    .replace(/\^\{?\\circ\}?/g, '°').replace(/\\circ/g, '°').replace(/\\approx/g, '≈').replace(/\\times/g, '×')
+    .replace(/\\le(q)?/g, '≤').replace(/\\ge(q)?/g, '≥').replace(/\\pm/g, '±').replace(/\\Delta/g, 'Δ').replace(/\\%/g, '%')
+    .replace(/\\cdot/g, '·').replace(/\\,|\\;|\\ /g, ' ')
+    .replace(/\$\$?([^$\n]+?)\$\$?/g, '$1').replace(/`([^`\n]+)`/g, '$1');
+  const md = s => esc(unTex(s)).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/^#+\s*(.+)$/gm, '<b>$1</b>').replace(/^\s*[\*-]\s+/gm, '• ');
   let busy = false;
   async function send(text) {
     if (busy || !text.trim()) return;
