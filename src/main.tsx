@@ -25,6 +25,7 @@ async function boot(): Promise<void> {
   window.__hpsSim = localApi.sim;
 
   const base = (import.meta.env.BASE_URL || './').replace(/\/?$/, '/');
+  await loadScriptSequential(`${base}ops.js`);
   await loadScriptSequential(`${base}app.js`);
   await loadScriptSequential(`${base}three.min.js`);
   await loadScriptSequential(`${base}sim3d.js`);

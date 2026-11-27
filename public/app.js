@@ -3580,7 +3580,7 @@ addPage('energy', 'Điện năng', root => {
 });
 
 // ------------------------------------------------------------------ khởi tạo trang
-const NAV = ['main', 'turbine1', 'turbine2', 'view3d', 'governor', 'sync', 'aux1', 'aux2', 'auxpower', 'intake', 'physics', 'trend', 'events', 'shift', 'energy', 'assess', 'protection'];
+const NAV = ['main', 'turbine1', 'turbine2', 'view3d', 'governor', 'sync', 'aux1', 'aux2', 'auxpower', 'intake', 'physics', 'trend', 'events', 'monitor', 'ai', 'shift', 'energy', 'assess', 'protection'];
 // ---- Chế độ tủ điều khiển (màn hình cảm ứng 1920×1080 gắn tủ / TV + chuột bay): nền tối, nút to, tự xoay trang
 const KIOSK_HIDE = ['protection'];
 const KIOSK_CYCLE = ['main', 'turbine1', 'turbine2', 'view3d', 'aux1', 'aux2', 'auxpower', 'intake', 'physics'];
@@ -3592,7 +3592,7 @@ document.body.classList.toggle('kiosk', kiosk);
 document.body.classList.toggle('dark', kiosk || (() => { try { return localStorage.getItem('hpsDark') === '1'; } catch (e) { return false; } })());
 let lastAct = Date.now(), holdUntil = 0;
 ['pointerdown', 'keydown', 'wheel'].forEach(ev => window.addEventListener(ev, () => lastAct = Date.now(), true));
-const SHORT = { main: 'Sơ đồ', aux1: 'Phụ trợ 1', aux2: 'Phụ trợ 2', auxpower: 'Tự dùng', intake: 'Cửa nhận nước', assess: 'Tự chấm điểm', protection: 'Bảo vệ rơ le' };
+const SHORT = { main: 'Sơ đồ', aux1: 'Phụ trợ 1', aux2: 'Phụ trợ 2', auxpower: 'Tự dùng', intake: 'Cửa nhận nước', assess: 'Tự chấm điểm', protection: 'Bảo vệ rơ le', monitor: 'Giám sát', ai: 'Trợ lý AI' };
 const ADMIN_PAGES = [];
 let navDdBtn = null;
 function buildNav() {
@@ -3744,6 +3744,11 @@ function frame(t) {
   requestAnimationFrame(frame);
 }
 
+if (window.HpsOps) {
+  addPage('monitor', 'Giám sát vận hành', root => window.HpsOps.monitor(root));
+  addPage('ai', 'Trợ lý AI', root => window.HpsOps.ai(root));
+}
+window.U = U; window.showPage = show;
 buildNav();
 function fitHeader() { document.documentElement.style.setProperty('--hh', document.querySelector('header').offsetHeight + 'px'); }
 window.addEventListener('resize', fitHeader); setTimeout(fitHeader, 50); fitHeader();

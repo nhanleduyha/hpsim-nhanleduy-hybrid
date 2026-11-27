@@ -1,3 +1,4 @@
+import { OpsMonitor } from './ops/OpsMonitor';
 import { PlantConfig, RelaySet } from './plant/PlantConfig';
 import { HpsSim } from './sim/HpsSim';
 import { AssessStore, SoeStore, TrendStore } from './sim/Records';
@@ -109,6 +110,7 @@ export interface LocalApi {
   soe: SoeStore;
   trend: TrendStore;
   assess: AssessStore;
+  ops: OpsMonitor;
   request(path: string, body?: unknown): Promise<unknown>;
   downloadCsv(filename: string, content: string): void;
   downloadAssessCsv(student?: string): void;
@@ -125,16 +127,24 @@ export function createLocalApi(): LocalApi {
   const soe = new SoeStore();
   const trend = new TrendStore();
   const assess = new AssessStore();
+  const ops = new OpsMonitor();
 
   let sim: HpsSim;
   let secCounter = 0;
 
   const wireSim = (instance: HpsSim) => {
+    ops.onAnomaly = (an) => {
+      const u = an.key.startsWith('G1') ? 1 : an.key.startsWith('G2') ? 2 : 3;
+      const m = `GIÁM SÁT: ${an.text}`;
+      instance.log('WARN', u, m);
+      instance.event('msg', m);
+    };
     instance.soe = (k, u, t) => soe.add(k, u, t);
     instance.energyStore = () => savePlantState(instance);
     instance.cfgRevProvider = () => cfgRev;
     instance.onSecond = () => {
       secCounter++;
+      try { ops.tick(instance.snapshot as Record<string, unknown>); } catch (e) { /* bỏ qua */ }
       if (secCounter % 2 === 0) {
         const snap = instance.snapshot;
         trend.add((k) => {
@@ -227,6 +237,7 @@ export function createLocalApi(): LocalApi {
     wireSim(sim);
     sim.init();
     soe.add('SESSION', 0, 'Khôi phục trạng thái nhà máy mặc định');
+    ops.reset();
     persistAll();
   };
 
@@ -539,6 +550,19 @@ export function createLocalApi(): LocalApi {
       case 'GET alarms':
         return [];
 
+      case 'GET ops/stats':
+        return ops.summary();
+
+      case 'GET ops/series': {
+        const k = query.key ?? '';
+        const sec = Math.min(7200, Math.max(10, (Number.parseFloat(query.min ?? '10') || 10) * 60));
+        const s = ops.series(k, sec);
+        const step = Math.max(1, Math.ceil(s.length / 120));
+        const pts: number[] = [];
+        for (let i = 0; i < s.length; i += step) pts.push(+s[i].toFixed(3));
+        return { key: k, stepS: step, points: pts, stats: ops.tagStats(k, sec), osc: ops.oscillation(k, Math.min(sec, 300)) };
+      }
+
       default:
         return { ok: false, error: `Không có API ${path}` };
     }
@@ -550,6 +574,7 @@ export function createLocalApi(): LocalApi {
     soe,
     trend,
     assess,
+    ops,
     request,
     downloadCsv,
     downloadAssessCsv: (student = '') => downloadCsv('lich-su-tu-cham-diem.csv', assess.toCsv(student)),
