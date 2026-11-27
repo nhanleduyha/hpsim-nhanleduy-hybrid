@@ -413,7 +413,10 @@ export class HydroUnit {
     // công suất ở tốc độ định mức (pu turbine), mô-men giảm tuyến tính theo tốc độ tới tốc độ lồng
     const p1 = ((this.h * (this.q - this.c.qNoLoad)) / (1 - this.c.qNoLoad)) * offCam * headEff;
     const wr = Math.max(this.c.runawayRpm / this.c.ratedRpm, 1.2);
-    const tTurb = (p1 * (1 - this.omega / wr)) / (1 - 1 / wr);
+    // Mất cột nước (cửa nhận nước đóng, đường ống tháo cạn): bánh xe công tác vẫn ngập nước hạ lưu,
+    // quay khuấy nước sinh mô-men cản ~ n² -> tổ máy hút công suất từ lưới (chạy động cơ) -> bảo vệ 32 tác động
+    const churn = this.c.churnLossPu * this.omega * this.omega * Math.min(1, Math.max(0, 1 - this.hStatic));
+    const tTurb = (p1 * (1 - this.omega / wr)) / (1 - 1 / wr) - churn;
     this.tmPu = (tTurb * this.c.turbineMW) / this.c.genMVA;
     this.pmMW = this.tmPu * this.omega * this.c.genMVA;
   }

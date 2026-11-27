@@ -158,6 +158,7 @@ export class UnitSeq {
   }
 
   /** Sa thải phụ tải: chuyển trình tự về NOLOAD, giữ kích từ, không dừng máy */
+  private lowSpdSince = -1.0;
   onLoadRejection(text = 'Sa thải phụ tải – chạy không tải (giữ kích từ)'): void {
     if (this.state === 'IDLE' || this.state.startsWith('STOP')) return;
     this.target = 2; this.g.generating = 2.0;
@@ -366,6 +367,13 @@ export class UnitSeq {
         if ((cb33Now && !this.cb33Prev) || (cb33Now && this.ph.plant.isUnitGridStiff(g.no))) {
           this.target = 1; g.generating = 1.0; this.go('LOAD', `Đóng máy cắt 33${g.no} – nhận tải`);
         }
+        // Không giữ được tốc độ không tải (mất cột nước: cửa nhận nước đóng, đường ống cạn): tốc độ < 90 % quá 10 s -> dừng máy
+        const simT = this.ph.plant.simTime;
+        if (!cb33Now && u.omega < 0.90) { if (this.lowSpdSince < 0) this.lowSpdSince = simT; } else this.lowSpdSince = -1.0;
+        if (this.lowSpdSince >= 0 && simT - this.lowSpdSince > 10.0) {
+          this.lowSpdSince = -1.0;
+          this.fail(`Tốc độ không giữ được (< 90 % quá 10 s, cột nước ${(u.hStatic * 100).toFixed(0)} %) – dừng máy`);
+        }
         break;
       }
       case 'FREE':
@@ -506,6 +514,7 @@ export class UnitSeq {
  * đồng bộ trạng thái khoá/thiết bị, chạy trình tự khởi động – dừng máy, xử lý rơ le tác động, đưa số đo ra các biến cũ.
  */
 export class Physics {
+  private intakeWarned = false;
   private readonly s: HpsSim;
   readonly cfg: () => PlantConfig;
   readonly plant: Plant;
@@ -718,6 +727,15 @@ export class Physics {
     p.gridAvailable = !this.gridLost;
     p.inflowM3s = this.cfg().inflowM3s * this.s.inflow;
     p.intakeCmd[0] = this.on(this.s.intakeGate); p.intakeCmd[1] = this.on(this.s.intakeGate);
+    // Cảnh báo: cửa nhận nước đang đóng khi có tổ máy quay (không phải dừng sự cố loại 2)
+    const unitRunning = p.units.some(x => x.omega > 0.3);
+    if (!this.on(this.s.intakeGate) && unitRunning && p.intake[0] < 0.999) {
+      if (!this.intakeWarned) {
+        this.intakeWarned = true;
+        const m = 'CẢNH BÁO: cửa nhận nước đang ĐÓNG khi tổ máy đang quay – cột nước giảm, tổ máy sẽ mất công suất và chạy động cơ (bảo vệ 32)';
+        this.s.log('WARN', 3, m); this.s.event('msg', m); this.s.alarm();
+      }
+    } else if (this.on(this.s.intakeGate) || !unitRunning) this.intakeWarned = false;
 
     const pairs: Array<[Gen, HydroUnit]> = [[this.s.g1, p.u1], [this.s.g2, p.u2]];
     const runStates = new Set(['S5', 'S6', 'S7', 'EXCITE', 'NOLOAD', 'FREE', 'SYNC', 'LOAD', 'RUN']);

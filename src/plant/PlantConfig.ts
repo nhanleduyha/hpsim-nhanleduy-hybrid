@@ -78,6 +78,7 @@ export class PlantConfig {
   qNoLoad = 0.08;
   headLossCoef = 0.02;
   frictionPu = 0.012;         // tổn hao ma sát + quạt gió ở tốc độ định mức (pu 10 MVA)
+  churnLossPu = 0.06;         // tổn hao khuấy nước của BXCT khi mất cột nước, ở tốc độ định mức (pu turbine)
 
   // ---------------- Máy phát SF8000-28/4250 (QT) ----------------
   genMVA = 10.0;
