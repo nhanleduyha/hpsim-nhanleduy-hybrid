@@ -36,7 +36,7 @@ const UNIT_TAGS = (n: number): TagDef[] => [
   { key: `G${n}.GV`, name: `H${n} – Độ mở cánh hướng`, unit: '%' },
   { key: `G${n}.oilMPa`, name: `H${n} – Áp lực dầu điều tốc`, unit: 'MPa' },
   { key: `G${n}.cwMPa`, name: `H${n} – Áp lực nước làm mát`, unit: 'MPa' },
-  { key: `G${n}.headCover`, name: `H${n} – Mức nước nắp turbine`, unit: '' },
+  { key: `G${n}.headCover`, name: `H${n} – Mức nước nắp turbine`, unit: 'mm' },
   { key: `G${n}.upper`, name: `H${n} – Nhiệt độ ổ hướng trên`, unit: '°C', riseAlarm: 0.2 },
   { key: `G${n}.lower`, name: `H${n} – Nhiệt độ ổ hướng dưới`, unit: '°C', riseAlarm: 0.2 },
   { key: `G${n}.thrust`, name: `H${n} – Nhiệt độ ổ đỡ`, unit: '°C', riseAlarm: 0.2 },
