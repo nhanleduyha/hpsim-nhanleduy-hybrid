@@ -241,6 +241,7 @@ export class UnitSeq {
       { t: '4. Nguồn kích từ ban đầu sẵn sàng (máy cắt diệt từ MK đóng)', ok: this.on(this.g.fieldDischarge), key: `GEN${n}.FIELDDISCHARGE` },
       { t: `5. Áp lực dầu điều khiển đủ (${fmt2(this.u.oilPressMPa)} MPa ≥ 3,3)`, ok: this.u.oilPressMPa >= 3.3 && !this.u.oilLeak },
       { t: '6. Mức dầu ổ đỡ, ổ hướng tuabin, ổ hướng máy phát bình thường', ok: true },
+      { t: `6. Điều tốc ở chế độ TỰ ĐỘNG (đang ${this.on(this.g.govAuto) ? 'TỰ ĐỘNG' : 'BẰNG TAY'})`, ok: this.on(this.g.govAuto), key: `GEN${n}.GOVAUTO` },
       { t: '7. Van nước, dầu, khí đúng vị trí – nước làm mát sẵn sàng', ok: !this.g.wpFail && !this.u.cwFail && this.on(this.s.intakeGate) },
       { t: '8. Không có sự cố ở phanh (phanh đã giải trừ)', ok: this.on(this.g.airBrake), key: `GEN${n}.AIRBRAKE` },
       { t: `9. Nhiệt độ dầu các ổ 10–35 °C (${fmt1(oilMin)}–${fmt1(oilMax)} °C)`, ok: oilMin >= 10.0 && oilMax <= 35.0 },
@@ -352,7 +353,7 @@ export class UnitSeq {
         if (u.omega > 0.95) {
           if (this.target === 3) this.go('FREE', 'Chạy không kích từ (tốc độ định mức)');
           else this.go('EXCITE', 'Bước 8: đưa kích từ vào làm việc');
-        } else if (this.t > 120) this.fail('Tốc độ không đạt 95 % định mức');
+        } else if (this.t > 120) this.fail('Tốc độ không đạt 95 % định mức' + (!this.on(this.g.govAuto) ? ' (điều tốc đang ở chế độ BẰNG TAY)' : ''));
         break;
       case 'EXCITE':
         if (this.t >= 3.0 && !u.excOn) { u.excOn = true; u.vref = 1.0; } // giữ 3 s ở trạng thái chạy không kích từ (Free running) như sơ đồ SD200
